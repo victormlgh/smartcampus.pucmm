@@ -43,6 +43,10 @@ def documentacion():
 def login():
         return render_template("login.html")
 
+@server.route("/metadata")
+def metadata():
+        return render_template("working_on.html")
+
 #RESTful APIs de la plataforma
 @server.route("/api/v1/ambiental", methods=['GET', 'POST'])
 def api_v1_ambientales():
