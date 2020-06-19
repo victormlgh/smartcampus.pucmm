@@ -69,19 +69,19 @@
                       <a href="#">Plataforma de monitoreo</a>
                       <ul class="dropdown">
                         <li><a href="/calidadaire">Calidad del Aire</a></li>
-                        <li><a href="/working_on">Ruido acustico</a></li>
-                        <li><a href="/working_on">Temperatura, humedad relativa y presión atmosferica</a></li>
+                        <li><a href="/ruido">Ruido acustico</a></li>
+                        <li><a href="/thp">Temperatura, humedad relativa y presión atmosferica</a></li>
                       </ul>
                     </li>
                     <li class="has-children">
                       <a href="#" class="nav-link">Puntos de medición</a>
                       <ul class="dropdown">
                         <li><a href="/csd">Campus Santo Domingo</a></li>
-                        <li><a href="/working_on">Campus Santiago</a></li>
+                        <li><a href="/csi">Campus Santiago</a></li>
                       </ul>
                     </li>
                     <li><a href="/datosabiertos" class="nav-link">Datos abiertos</a></li>
-                    <li><a href="/working_on" class="nav-link">Documentación</a></li>
+                    <li><a href="/documentacion" class="nav-link">Documentación</a></li>
                   </ul>
                 </li>
                 <li class="has-children">
@@ -117,7 +117,8 @@
                 <div class="d-flex mb-4">
                   <div class="mr-auto text-black">
                     <p>Accede a nuestros datos de forma libre. Te damos la oportunidad de que descargue los datos, y lo utilices en cualquier proyecto que tengas. Es importante que todos podamos crear soluciones para nuestra comunidad.</p>
-                    <p><a href="http://smartcampus.pucmm.edu.do/api/v1/ambiental" class="btn btn-primary">Descargar</a></p>
+                    <h5>Descarga en:</h5>
+                    <p><a href="/api/v1/ambiental" class="btn btn-primary">JSON</a> <a href="/api/v1/ambiental?formato=csv" class="btn btn-primary">CSV</a></p>
                   </div>
                 </div>
   
@@ -130,9 +131,12 @@
                   <div class="mr-auto text-black">
                     <ul class="ul-check mb-5 list-unstyled success">
                       <li>Licencia: <a href ="https://opendefinition.org/licenses/odc-odbl/">Open Database License (ODbL)</a></li>
-                      <li>Formato: JSON (ver sección de documentación)</li>
+                      <li><a href="/metadata">Metadata</a></li>
+                      <li>Formato: JSON & CSV </li>
                       <li>Creado: 7 de mayo, 2020</li>
                       <li>Actualizado: tiempo real</li>
+                      <li>Si utilizas nuestros datos, por favor citarnos</li>
+                      <li>Más detalles en nuestra sección de <a href="/documentacion">documentación</a></li>
                     </ul>
                   </div>
                 </div>

@@ -1,17 +1,32 @@
 import mysql.connector as mariadb
 from datetime import datetime
+import pandas as pd
 import json
+
 
 query_num_serial = "SELECT ID_Modulo FROM Modulo WHERE Num_serial = %s"
 query_var_ambiental = "SELECT ID_VA FROM Variables_ambientales WHERE Nombre = %s"
 query_var_interna = "SELECT ID_VI FROM Variables_Internas WHERE Nombre = %s"
 query_insert_ambiental = "INSERT INTO Medidas_Ambientales (ID_Variables_ambientales, ID_Modulo, Valor, Fecha) VALUES (%s,%s,%s,%s)"
 query_insert_interna = "INSERT INTO Medida_internas (ID_Variables_Internas, ID_Modulo, Valor, Fecha) VALUES (%s,%s,%s,%s)"
-query_select_ambiental = "select Nombre, ID_Modulo, Valor, Fecha from Medidas_Ambientales, Variables_ambientales where ID_VA = ID_Variables_ambientales order by Fecha;"
 query_select_interna = "select Nombre, ID_Modulo, Valor, Fecha from Medida_internas, Variables_Internas where ID_VI = ID_Variables_Internas order by Fecha;"
+
+query_select_ambiental_all = "select Medidas_Ambientales.ID_Modulo as ID_Modulo,Latitud, Longitud, Altitud, Nombre, Valor, Fecha from Medidas_Ambientales, Variables_ambientales, Posicion where ID_VA = ID_Variables_ambientales and Posicion.ID_Modulo = Medidas_Ambientales.ID_Modulo and Fecha >= Fecha_Inicial and (Fecha <= Fecha_Final or Fecha_Final is null);"
+query_select_ambiental_by_date = "select Medidas_Ambientales.ID_Modulo as ID_Modulo,Latitud, Longitud, Altitud, Nombre, Valor, Fecha from Medidas_Ambientales, Variables_ambientales, Posicion where ID_VA = ID_Variables_ambientales and Posicion.ID_Modulo = Medidas_Ambientales.ID_Modulo and Fecha >= Fecha_Inicial and (Fecha <= Fecha_Final or Fecha_Final is null) and Fecha "
+
+api_date_format = '%Y-%m-%d'
+post_date_format = '%a, %y/%m/%d, %H:%M:%S'
+get_date_format = '%Y/%m/%d, %H:%M:%S'
 
 with open('config/credential.json') as f:
         credential = json.load(f)
+
+def validate_api_date(date_text):
+    try:
+        datetime.strptime(date_text, api_date_format)
+        return True
+    except ValueError:
+        return False
 
 def post_ambiental(data):
 
@@ -24,7 +39,7 @@ def post_ambiental(data):
         )
     cursor = db_connection.cursor()
     valor = float(data['Valor'])
-    fecha = datetime.strptime(data['Timestamp'], '%a, %y/%m/%d, %H:%M:%S')
+    fecha = datetime.strptime(data['Timestamp'], post_date_format)
 
     try:
         cursor.execute(query_num_serial, (data['Numero_Serial'],))
@@ -57,7 +72,7 @@ def post_interna(data):
         )
     cursor = db_connection.cursor()
     valor = float(data['Valor'])
-    fecha = datetime.strptime(data['Timestamp'], '%a, %y/%m/%d, %H:%M:%S')
+    fecha = datetime.strptime(data['Timestamp'], post_date_format)
 
     try:
         cursor.execute(query_num_serial, (data['Numero_Serial'],))
@@ -79,7 +94,7 @@ def post_interna(data):
 
     return html_response
 
-def get_ambiental():
+def get_ambiental(format, inicio, fin):
     results = []
     row_headers = []
     db_connection = mariadb.connect(
@@ -87,22 +102,79 @@ def get_ambiental():
         password=credential["DB_PASS"], 
         database=credential["DB"]
         )
-    try:       
-        cursor = db_connection.cursor()
-        cursor.execute(query_select_ambiental)
-        row_headers=[x[0] for x in cursor.description]
-        results = cursor.fetchall()
-    except mariadb.Error as error:
-        print("Error: {}".format(error))
-    cursor.close()
-    db_connection.close()
-    data = []
-    for row in results:
-        data.append(dict(zip(row_headers, row)))
-    for x in data:
-        x['Fecha'] = x['Fecha'].strftime('%y/%m/%d, %H:%M:%S')
 
-    return data
+    if None not in [inicio,fin]:
+        if not validate_api_date(inicio) and not validate_api_date(fin):
+            return "Formato de fecha incorrecto, por favor ver la documentación"
+        
+        dt_inicio = datetime.combine(datetime.strptime(inicio, api_date_format), datetime.min.time())
+        dt_fin = datetime.combine(datetime.strptime(fin, api_date_format), datetime.max.time())
+        query = query_select_ambiental_by_date + "Between %s and %s;"
+        try:       
+            cursor = db_connection.cursor()
+            cursor.execute(query, (dt_inicio, dt_fin))
+            row_headers=[x[0] for x in cursor.description]
+            results = cursor.fetchall()
+        except mariadb.Error as error:
+            print("Error: {}".format(error))
+        cursor.close()
+        db_connection.close()
+            
+    elif inicio != None:
+        if not validate_api_date(inicio):
+            return "Formato de fecha incorrecto, por favor ver la documentación"
+        
+        dt_inicio = datetime.combine(datetime.strptime(inicio, api_date_format), datetime.min.time())
+        query = query_select_ambiental_by_date + ">= %s"
+        try:       
+            cursor = db_connection.cursor()
+            cursor.execute(query, (dt_inicio,))
+            row_headers=[x[0] for x in cursor.description]
+            results = cursor.fetchall()
+        except mariadb.Error as error:
+            print("Error: {}".format(error))
+        cursor.close()
+        db_connection.close()
+
+    elif fin != None:
+        if not validate_api_date(fin):
+            return "Formato de fecha incorrecto, por favor ver la documentación"
+        
+        dt_fin = datetime.combine(datetime.strptime(fin, api_date_format), datetime.max.time())
+        query = query_select_ambiental_by_date + "<= %s"
+        try:       
+            cursor = db_connection.cursor()
+            cursor.execute(query, (dt_fin,))
+            row_headers=[x[0] for x in cursor.description]
+            results = cursor.fetchall()
+        except mariadb.Error as error:
+            print("Error: {}".format(error))
+        cursor.close()
+        db_connection.close()
+
+    else:
+        try:       
+            cursor = db_connection.cursor()
+            cursor.execute(query_select_ambiental_all)
+            row_headers=[x[0] for x in cursor.description]
+            results = cursor.fetchall()
+        except mariadb.Error as error:
+            print("Error: {}".format(error))
+        cursor.close()
+        db_connection.close()
+    
+    if format == 'csv':
+        data = pd.DataFrame(data=results, columns=row_headers)
+        data['Fecha'].apply(lambda x: x.strftime(get_date_format))
+        return data.to_csv()
+    else:
+        data = []
+        for row in results:
+            data.append(dict(zip(row_headers, row)))
+        for x in data:
+            x['Fecha'] = x['Fecha'].strftime(get_date_format)
+        
+        return data
 
 def get_interna():
     results = []
@@ -125,7 +197,7 @@ def get_interna():
     for row in results:
         data.append(dict(zip(row_headers, row)))
     for x in data:
-        x['Fecha'] = x['Fecha'].strftime('%y/%m/%d, %H:%M:%S')
+        x['Fecha'] = x['Fecha'].strftime(get_date_format)
 
     return data
  

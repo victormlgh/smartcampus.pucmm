@@ -18,8 +18,7 @@ DATA_PATH = PATH.joinpath("data").resolve()
 aq_api_url = "http://smartcampus.pucmm.edu.do/api/v1/ambiental"
 
 #Date format
-date_format='%y/%m/%d, %H:%M:%S'
-#dpr_format = '%Y-%m-%dT%H:%M:%S.%f' #Date Picker Range format
+date_format='%Y/%m/%d, %H:%M:%S'
 dpr_format = '%Y-%m-%d' #Date Picker Range format
 
 #ID_Modulos Calidad del Aire en Campus PUCMM
@@ -312,7 +311,6 @@ def aqi_dash(server, route):
                                 id="time_range",
                                 display_format="DD/MMM/YYYY ",
                                 min_date_allowed=dt.datetime(2020, 5, 7),
-                                max_date_allowed=dt.datetime.today() + dt.timedelta(days=1),
                                 day_size=50,
                                 start_date_placeholder_text="Fecha de Inicio",
                                 end_date_placeholder_text="Fecha Final",
@@ -385,7 +383,7 @@ def aqi_dash(server, route):
                 className="row flex-display",
             ),
             html.A("Puedes descargar nuestros datos de forma abierta y en el formato que deseas.", href="http://smartcampus.pucmm.edu.do/datosabiertos"),
-            html.A("Para más información, ver nuestra sección de documentación.", href="http://smartcampus.pucmm.edu.do/"),
+            html.A("Para más información, ver nuestra sección de documentación.", href="http://smartcampus.pucmm.edu.do/documentacion"),
         ],
         id="mainContainer",
         style={"display": "flex", "flex-direction": "column"},
