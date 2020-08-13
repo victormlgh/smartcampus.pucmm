@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Smart Campus &mdash; Pontificia Universidad Católica Madre y Maestra</title>
+    <title>Inicio de sessión &mdash; Smart Campus &mdash; Pontificia Universidad Católica Madre y Maestra</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="static/css/aos.css">
 
     <link rel="stylesheet" href="static/css/style.css">
+
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
 
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -61,37 +63,8 @@
             <nav class="site-navigation position-relative text-right" role="navigation">
 
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
-                <li><a href="{{ url_for('.index', _anchor='home-section') }}" class="nav-link">Inicio</a></li>
-                <li class="has-children">
-                  <a href="{{ url_for('.index', _anchor='proyecto-section') }}" class="nav-link">Sobre el proyecto</a>
-                  <ul class="dropdown arrow-top">
-                    <li class="has-children">
-                      <a href="#">Plataforma de monitoreo</a>
-                      <ul class="dropdown">
-                        <li><a href="/calidadaire">Calidad del Aire</a></li>
-                        <li><a href="/ruido">Ruido acustico</a></li>
-                        <li><a href="/thp">Temperatura, humedad relativa y presión atmosferica</a></li>
-                      </ul>
-                    </li>
-                    <li class="has-children">
-                      <a href="#" class="nav-link">Puntos de medición</a>
-                      <ul class="dropdown">
-                        <li><a href="/csd">Campus Santo Domingo</a></li>
-                        <li><a href="/csi">Campus Santiago</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="/datosabiertos" class="nav-link">Datos abiertos</a></li>
-                    <li><a href="/documentacion" class="nav-link">Documentación</a></li>
-                  </ul>
-                </li>
-                <li class="has-children">
-                  <a href="{{ url_for('.index', _anchor='nosotros-section') }}" class="nav-link">Nosotros</a>
-                  <ul class="dropdown arrow-top">
-                    <li><a href="{{ url_for('.index', _anchor='equipo-section') }}">Equipo de desarrollo</a></li>
-                    <li><a href="{{ url_for('.index', _anchor='iniciativas-section') }}">Otras iniciativas</a></li>
-                    <li><a href="{{ url_for('.index', _anchor='contacto-section') }}">Contacto</a></li>
-                  </ul>
-                </li>
+                <li><a href="/" class="nav-link">Inicio</a></li>
+                <li><a href="/paneldatos" class="nav-link">Panel de datos</a></li>
                 <li><a href="/login" class="nav-link">Iniciar sesión</a></li>
               </ul>
             </nav>

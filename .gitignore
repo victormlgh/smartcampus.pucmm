@@ -6,6 +6,7 @@ application/querytest.py
 .DS_Store
 .AppleDouble
 .LSOverride
+application/.DS_Store
 
 # Icon must end with two \r
 Icon

@@ -28,28 +28,28 @@ csd_modulo = 2
 def aqi_dash(server, route):
 
     app = dash.Dash(__name__, server=server, routes_pathname_prefix=route)
+    app.title = 'Índice Calidad del Aire - Smart Campus - Pontificia Universidad Católica Madre y Maestra'
 
     # App layout section
     app.layout = html.Div(
         [
             # empty Div to trigger javascript file for graph resizing
-            html.Br(),
-            html.Br(),
+            
             html.Div(
                 [
                     html.Div(
                         [
                             html.A(
                                 html.Img(
-                                    src=app.get_asset_url("PUCMM.png"),
-                                    id="pucmm-logo",
+                                    src=app.get_asset_url("SmartCampusLogo.png"),
+                                    id="smartcampus",
                                     style={
-                                        "height": "70px",
+                                        "height": "200px",
                                         "width": "auto",
                                         "margin-bottom": "25px",
                                     },
                                 ),
-                                href="https://pucmm.edu.do/",
+                                href="https://smartcampus.pucmm.edu.do/",
                             )
                             
                         ],
@@ -60,217 +60,250 @@ def aqi_dash(server, route):
                             html.Div(
                                 [
                                     html.H3(
-                                        "Índice de calidad del aire y sus contaminantes",
+                                        "Panel de datos",
                                         style={"margin-bottom": "0px"},
                                     ),
-                                    html.H5(
-                                        id="fecha_actualizado_text", style={"margin-top": "0px"}
+                                    html.H4(
+                                        "Índice de Calidad del Aire",
+                                        style={"margin-bottom": "0px"},
                                     ),
+                                    
                                 ]
                             )
                         ],
-                        className="one-half column",
-                        id="title",
+                        className="one-third column",
+                    ),
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.A("Panel de datos", href="http://smartcampus.pucmm.edu.do/paneldatos", style={'padding': 15}),
+                                    html.A("Datos abiertos", href="http://smartcampus.pucmm.edu.do/datosabiertos", style={'padding': 15}),
+                                    html.A("Documentación", href="http://smartcampus.pucmm.edu.do/documentacion", style={'padding': 15}),
+                                    
+                                ]
+                            )
+                        ],
+                        className="one-third column",
+                        id="links",
                     ),
                 ],
-                id="header",
+                id="menu",
                 className="row flex-display",
                 style={"margin-bottom": "25px"},
             ),
-            #Indicadores de calidad de aire y contaminantes de CSI
-            html.Div(
-                [ 
-                    html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.P("Índice de Calidad del Aire"),
-                                    daq.Gauge(
-                                        id="csi_aq_gauge",
-                                        max=500,
-                                        min=0,
-                                        color={'default':'#4285f4'},
-                                        showCurrentValue=True,  # default size 200 pixel
-                                    ),
-                                ],
-                                className="mini_container",
-                            ),
-                            html.Div(
-                                [
-                                    html.H5("Campus Santiago"),
-                                    html.P(
-                                        "Nivel actual de los contaminantes",
-                                        className="control_label",
-                                    ),
-                                    html.Div(
-                                        [
-                                            html.Div(
-                                                [html.H6(id="csi_pm1_text"), html.P("Particulado PM1")], 
-                                                id="csi_pm1",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_pm25_text"), html.P("Particulado PM2.5")],
-                                                id="csi_pm25",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_pm10_text"), html.P("Particulado PM10")], 
-                                                id="csi_pm10",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_co_text"), html.P("Monóxido de Carbono (CO)")], 
-                                                id="csi_co",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_no2_text"), html.P("Dióxido de Nitrógeno (NO\u2082)")],
-                                                id="csi_no2",
-                                                className="mini_container",
-                                            ),
-                                        ],
-                                        id="csi_info_container",
-                                        className="row container-display",
-                                    ),
-                                    html.Div(
-                                        [
-                                            html.Div(
-                                                [html.H6(id="csi_o3_text"), html.P("Ozono (O\u2083)")],
-                                                id="csi_o3",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_so2_text"), html.P("Dióxido de Azufre (SO\u2082)")],
-                                                id="csi_so2",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_temp_text"), html.P("Temperatura")],
-                                                id="csi_temp",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_pres_text"), html.P("Presión Atmosférica")], 
-                                                id="csi_pres",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csi_hum_text"), html.P("Humedad relativa")], 
-                                                id="csi_hum",
-                                                className="mini_container",
-                                            ),
-                                        ],
-                                        id="csi_info_container2",
-                                        className="row container-display",
-                                    ),
-                                ],   
-                            )   
-                        ],
-                        id="csi_aq_cont",
-                        className="row container-display",
-                    ),
-                ],
-                className="row flex-display",
-            ),
 
-            #Indicadores de calidad de aire y contaminantes de CSD
-            html.Div(
-                [ 
-                    html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.P("Índice de Calidad del Aire"),
-                                    daq.Gauge(
-                                        id="csd_aq_gauge",
-                                        max=500,
-                                        min=0,
-                                        color={'default':'#4285f4'},
-                                        showCurrentValue=True,  # default size 200 pixel
-                                    ),
-                                ],
-                                className="mini_container",
-                            ),
-                            html.Div(
-                                [
-                                    html.H5("Campus Santo Domingo"),
-                                    html.P(
-                                        "Nivel actual de los contaminantes",
-                                        className="control_label",
-                                    ),
-                                    html.Div(
-                                        [
-                                            html.Div(
-                                                [html.H6(id="csd_pm1_text"), html.P("Particulado PM1")], 
-                                                id="csd_pm1",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_pm25_text"), html.P("Particulado PM2.5")],
-                                                id="csd_pm25",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_pm10_text"), html.P("Particulado PM10")], 
-                                                id="csd_pm10",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_co_text"), html.P("Monóxido de Carbono (CO)")], 
-                                                id="csd_co",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_no2_text"), html.P("Dióxido de Nitrógeno (NO\u2082)")],
-                                                id="csd_no2",
-                                                className="mini_container",
-                                            ),
-                                        ],
-                                        id="csd_info_container",
-                                        className="row container-display",
-                                    ),
-                                    html.Div(
-                                        [
-                                            html.Div(
-                                                [html.H6(id="csd_o3_text"), html.P("Ozono (O\u2083)")],
-                                                id="csd_o3",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_so2_text"), html.P("Dióxido de Azufre (SO\u2082)")],
-                                                id="csd_so2",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_temp_text"), html.P("Temperatura")],
-                                                id="csd_temp",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_pres_text"), html.P("Presión Atmosférica")], 
-                                                id="csd_pres",
-                                                className="mini_container",
-                                            ),
-                                            html.Div(
-                                                [html.H6(id="csd_hum_text"), html.P("Humedad relativa")], 
-                                                id="csd_hum",
-                                                className="mini_container",
-                                            ),
-                                        ],
-                                        id="csd_info_container2",
-                                        className="row container-display",
-                                    ),
-                                ],   
-                            )   
-                        ],
-                        id="csd_aq_cont",
-                        className="row container-display",
-                    ),
-                ],
-                className="row flex-display",
-            ),
+            #Pestañas de condiciones actuales en ambos campus
+            dcc.Tabs(
+                [
+                    dcc.Tab(label='Campus Santo Domingo', children=[
+                        html.Div(
+                            [ 
+                                html.Div(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.P("Índice de Calidad del Aire"),
+                                                daq.Gauge(
+                                                    id="csd_aq_gauge",
+                                                    max=500,
+                                                    min=0,
+                                                    color={'default':'#4285f4'},
+                                                    showCurrentValue=True,  # default size 200 pixel
+                                                ),
+                                            ],
+                                            className="mini_container",
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.Br(),
+                                                html.P(
+                                                    "Nivel actual de los contaminantes",
+                                                    className="control_label",
+                                                ),
+                                                html.Div(
+                                                    [
+                                                        html.Div(
+                                                            [html.H6(id="csd_pm1_text"), html.P("Particulado PM1")], 
+                                                            id="csd_pm1",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_pm25_text"), html.P("Particulado PM2.5")],
+                                                            id="csd_pm25",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_pm10_text"), html.P("Particulado PM10")], 
+                                                            id="csd_pm10",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_co_text"), html.P("Monóxido de Carbono (CO)")], 
+                                                            id="csd_co",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_no2_text"), html.P("Dióxido de Nitrógeno (NO\u2082)")],
+                                                            id="csd_no2",
+                                                            className="mini_container",
+                                                        ),
+                                                    ],
+                                                    id="csd_info_container",
+                                                    className="row container-display",
+                                                ),
+                                                html.Div(
+                                                    [
+                                                        html.Div(
+                                                            [html.H6(id="csd_o3_text"), html.P("Ozono (O\u2083)")],
+                                                            id="csd_o3",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_so2_text"), html.P("Dióxido de Azufre (SO\u2082)")],
+                                                            id="csd_so2",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_temp_text"), html.P("Temperatura")],
+                                                            id="csd_temp",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_pres_text"), html.P("Presión Atmosférica")], 
+                                                            id="csd_pres",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csd_hum_text"), html.P("Humedad relativa")], 
+                                                            id="csd_hum",
+                                                            className="mini_container",
+                                                        ),
+                                                    ],
+                                                    id="csd_info_container2",
+                                                    className="row container-display",
+                                                ),
+                                                html.P(
+                                                    "Los sensores no están activos - Vuelve pronto - Estamos en mantenimiento",
+                                                    className="control_label", id="csd_fecha_actualizado_text",
+                                                ),
+                                            ],   
+                                        )   
+                                    ],
+                                    id="csd_aq_cont",
+                                    className="row container-display",
+                                ),
+                            ],
+                            className="row flex-display",
+                        ),
+                    ]),
 
+                    dcc.Tab(label='Campus Santiago', children=[
+                        html.Div(
+                            [ 
+                                html.Div(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.P("Índice de Calidad del Aire"),
+                                                daq.Gauge(
+                                                    id="csi_aq_gauge",
+                                                    max=500,
+                                                    min=0,
+                                                    color={'default':'#4285f4'},
+                                                    showCurrentValue=True,  # default size 200 pixel
+                                                ),
+                                            ],
+                                            className="mini_container",
+                                        ),
+                                        html.Div(
+                                            [
+                                                html.Br(),
+                                                html.P(
+                                                    "Nivel actual de los contaminantes",
+                                                    className="control_label",
+                                                ),
+                                                html.Div(
+                                                    [
+                                                        html.Div(
+                                                            [html.H6(id="csi_pm1_text"), html.P("Particulado PM1")], 
+                                                            id="csi_pm1",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_pm25_text"), html.P("Particulado PM2.5")],
+                                                            id="csi_pm25",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_pm10_text"), html.P("Particulado PM10")], 
+                                                            id="csi_pm10",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_co_text"), html.P("Monóxido de Carbono (CO)")], 
+                                                            id="csi_co",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_no2_text"), html.P("Dióxido de Nitrógeno (NO\u2082)")],
+                                                            id="csi_no2",
+                                                            className="mini_container",
+                                                        ),
+                                                    ],
+                                                    id="csi_info_container",
+                                                    className="row container-display",
+                                                ),
+                                                html.Div(
+                                                    [
+                                                        html.Div(
+                                                            [html.H6(id="csi_o3_text"), html.P("Ozono (O\u2083)")],
+                                                            id="csi_o3",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_so2_text"), html.P("Dióxido de Azufre (SO\u2082)")],
+                                                            id="csi_so2",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_temp_text"), html.P("Temperatura")],
+                                                            id="csi_temp",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_pres_text"), html.P("Presión Atmosférica")], 
+                                                            id="csi_pres",
+                                                            className="mini_container",
+                                                        ),
+                                                        html.Div(
+                                                            [html.H6(id="csi_hum_text"), html.P("Humedad relativa")], 
+                                                            id="csi_hum",
+                                                            className="mini_container",
+                                                        ),
+                                                    ],
+                                                    id="csi_info_container2",
+                                                    className="row container-display",
+                                                ),
+                                                html.P(
+                                                    "Los sensores no están activos - vuelve pronto - Estamos en mantenimiento",
+                                                    className="control_label", id="csi_fecha_actualizado_text",
+                                                ),
+                                            ],   
+                                        )   
+                                    ],
+                                    id="csi_aq_cont",
+                                    className="row container-display",
+                                ),
+                            ],
+                            className="row flex-display",
+                        ),
+                        
+
+                    ]),
+                ]
+            ),
+            #Botones de selección y tabla de referencia
             html.Div(
                 [
                     html.Div(
@@ -329,6 +362,7 @@ def aqi_dash(server, route):
                 ],
                 className="row flex-display",
             ),
+            #Representación visual del historicos del Indice de Calidad del Aire
             html.Div(
                 [
                     html.Div(
@@ -339,6 +373,7 @@ def aqi_dash(server, route):
                 ],
                 className="row flex-display",
             ),
+            #Representación visual del historicos de los contaminantes que forman el índice
             html.Div(
                 [
                     html.Div(
@@ -382,16 +417,14 @@ def aqi_dash(server, route):
                 ],
                 className="row flex-display",
             ),
-            html.A("Puedes descargar nuestros datos de forma abierta y en el formato que deseas.", href="http://smartcampus.pucmm.edu.do/datosabiertos"),
-            html.A("Para más información, ver nuestra sección de documentación.", href="http://smartcampus.pucmm.edu.do/documentacion"),
         ],
         id="mainContainer",
         style={"display": "flex", "flex-direction": "column"},
         )
 
     #Cargar el data frame
-    def load_data():
-        df = pd.DataFrame.from_dict(requests.get(aq_api_url).json())
+    def load_data(url):
+        df = pd.DataFrame.from_dict(requests.get(url).json())
         df.loc[df['ID_Modulo'].isin([csi_modulo,csd_modulo])]           #Modulos de AQ de CSI & CSD
         df['Fecha'] = pd.to_datetime(df['Fecha'], format=date_format)
         df['Valor'] =df['Valor'].replace(to_replace=-1, value=0)
@@ -401,12 +434,8 @@ def aqi_dash(server, route):
         return df
 
     #Filtro del Data Frame
-    def filter_dataframe(df, campus_selector, date_type_selector, time_range_start, time_range_end):
-        
-        start_date=dt.datetime.combine(dt.datetime.strptime(time_range_start, dpr_format), dt.datetime.min.time())
-        end_date = dt.datetime.combine(dt.datetime.strptime(time_range_end, dpr_format), dt.datetime.max.time())
-
-        dff = df.loc[(df["Fecha"] >= start_date) & (df["Fecha"] <= end_date)]
+    def filter_dataframe(df, campus_selector, date_type_selector):
+        dff = df
 
         if campus_selector=="csi":
             dff = dff.loc[dff['ID_Modulo']==csi_modulo]
@@ -420,14 +449,28 @@ def aqi_dash(server, route):
 
     #Calcula el Indice de Calidad del Aire (AQI) con los distintos contaminantes
     def calculate_aqi(row):
+        #para evitar error en caso que no todos los datos fueron tomado por el modulo
+        pm25 = pm10 = o3 = co = so2 = no2 = 0
+        if 'PM25' in row.index:
+            pm25 = row.loc['PM25']["Valor"]
+        if 'PM10' in row.index:
+            pm10 = row.loc['PM10']["Valor"]
+        if 'Gas_O3' in row.index:
+            o3 = row.loc['Gas_O3']["Valor"]
+        if 'Gas_CO' in row.index:
+            co = row.loc['Gas_CO']["Valor"]
+        if 'Gas_SO2' in row.index:
+            so2 = row.loc['Gas_SO2']["Valor"]
+        if 'Gas_NO2' in row.index:
+            no2 = row.loc['Gas_NO2']["Valor"]
 
         value = aqi.to_aqi([
-            (aqi.POLLUTANT_PM25, row.loc['PM25']["Valor"]),
-            (aqi.POLLUTANT_PM10, row.loc['PM10']["Valor"]),
-            (aqi.POLLUTANT_O3_8H, row.loc['Gas_O3']["Valor"]),
-            (aqi.POLLUTANT_CO_8H, row.loc['Gas_CO']["Valor"]),
-            (aqi.POLLUTANT_SO2_1H, row.loc['Gas_SO2']["Valor"]),
-            (aqi.POLLUTANT_NO2_1H, row.loc['Gas_NO2']["Valor"]),
+            (aqi.POLLUTANT_PM25, pm25),
+            (aqi.POLLUTANT_PM10, pm10),
+            (aqi.POLLUTANT_O3_8H, o3),
+            (aqi.POLLUTANT_CO_8H, co),
+            (aqi.POLLUTANT_SO2_1H, so2),
+            (aqi.POLLUTANT_NO2_1H, no2),
         ])
         
         return value
@@ -463,17 +506,40 @@ def aqi_dash(server, route):
 
     #Colocar en el dash los ultimos valores tomados
     def texto_ultimo_valores(data):
+        #para evitar error en caso que no todos los datos fueron tomado por el modulo
+        temp = presion = humedad = pm1 = pm25 = pm10 = o3 = co = so2 = no2 = 0
+        if 'PM1' in data.index:
+            pm1 = data.loc['PM1']["Valor"]
+        if 'PM25' in data.index:
+            pm25 = data.loc['PM25']["Valor"]
+        if 'PM10' in data.index:
+            pm10 = data.loc['PM10']["Valor"]
+        if 'Gas_O3' in data.index:
+            o3 = data.loc['Gas_O3']["Valor"]
+        if 'Gas_CO' in data.index:
+            co = data.loc['Gas_CO']["Valor"]
+        if 'Gas_SO2' in data.index:
+            so2 = data.loc['Gas_SO2']["Valor"]
+        if 'Gas_NO2' in data.index:
+            no2 = data.loc['Gas_NO2']["Valor"]
+        if 'Presion' in data.index:
+            presion = data.loc['Presion']["Valor"]
+        if 'Humedad' in data.index:
+            humedad = data.loc['Humedad']["Valor"]
+        if 'Temp' in data.index:
+            temp = data.loc['Temp']["Valor"]
+
         info = {}
-        info["presion"] = '{:,.4f}'.format(float(data.loc['Presion']["Valor"])).rstrip('0').rstrip('.') + '  Pa'
-        info["humedad"] = '{:,.2f}'.format(float(data.loc['Humedad']["Valor"])).rstrip('0').rstrip('.') + '  %'
-        info["pm1"] = '{:,.4f}'.format(float(data.loc['PM1']["Valor"])).rstrip('0').rstrip('.') + '  µg/\u33A5'
-        info["pm25"] = '{:,.4f}'.format(float(data.loc['PM25']["Valor"])).rstrip('0').rstrip('.') + '  µg/\u33A5'
-        info["pm10"] = '{:,.4f}'.format(float(data.loc['PM10']["Valor"])).rstrip('0').rstrip('.') + '  µg/\u33A5'
-        info["o3"] = '{:,.4f}'.format(float(data.loc['Gas_O3']["Valor"])).rstrip('0').rstrip('.') + ' ppm'
-        info["co"] = '{:,.4f}'.format(float(data.loc['Gas_CO']["Valor"])).rstrip('0').rstrip('.') + ' ppm'
-        info["no2"] = '{:,.4f}'.format(float(data.loc['Gas_NO2']["Valor"])).rstrip('0').rstrip('.') + ' ppb'
-        info["so2"] = '{:,.4f}'.format(float(data.loc['Gas_SO2']["Valor"])).rstrip('0').rstrip('.') + ' ppb'
-        info["temp"] = '{:,.4f}'.format(float(data.loc['Temp']["Valor"])).rstrip('0').rstrip('.') + ' ˚C'
+        info["presion"] = '{:,.4f}'.format(float(presion)).rstrip('0').rstrip('.') + ' Pa'
+        info["humedad"] = '{:,.2f}'.format(float(humedad)).rstrip('0').rstrip('.') + ' %' 
+        info["pm1"] = '{:,.4f}'.format(float(pm1)).rstrip('0').rstrip('.') + ' µg/\u33A5'
+        info["pm25"] = '{:,.4f}'.format(float(pm25)).rstrip('0').rstrip('.') + ' µg/\u33A5'
+        info["pm10"] = '{:,.4f}'.format(float(pm10)).rstrip('0').rstrip('.') + ' µg/\u33A5'
+        info["o3"] = '{:,.4f}'.format(float(o3)).rstrip('0').rstrip('.') + ' ppm'
+        info["co"] = '{:,.4f}'.format(float(co)).rstrip('0').rstrip('.') + ' ppm'
+        info["no2"] = '{:,.4f}'.format(float(no2)).rstrip('0').rstrip('.') + ' ppb'
+        info["so2"] = '{:,.4f}'.format(float(so2)).rstrip('0').rstrip('.') + ' ppb'
+        info["temp"] = '{:,.4f}'.format(float(temp)).rstrip('0').rstrip('.') + ' ˚C'
 
         return info
 
@@ -644,26 +710,37 @@ def aqi_dash(server, route):
             Output("csd_temp_text", "children"),
             Output("csd_hum_text", "children"),
             Output("csd_pres_text", "children"),
-            Output("fecha_actualizado_text", "children"),
+            #Output("csi_fecha_actualizado_text", "children"),
+            Output("csd_fecha_actualizado_text", "children"),
             #Output("csi_aq_gauge", "value"),
             Output("csd_aq_gauge", "value"),
         ],
-        [Input("campus_selector", "value")],
+        [
+            Input("campus_selector", "value"),
+            Input("date_type_selector", "value"),
+            Input("time_range", "start_date"),
+            Input("time_range", "end_date"),
+        ],
         )
-    def update_app_text(campus_selector):
+    def update_app_text(campus_selector, date_type_selector, time_range_start, time_range_end):
 
-        df = load_data()
+        url = aq_api_url + "?inicio={}".format(dt.datetime.today().strftime(dpr_format))
+        #df = load_data(url)
+        df = filter_dataframe(load_data(url), 'ambos', 'H')
 
-        dff = df.loc[df['Fecha']==df['Fecha'].max()]    #ultimas medidas
-        df_csi = dff.loc[df['ID_Modulo']==csi_modulo]             #modulo AQ_CSI
+        
+        df_csi = df.loc[df['ID_Modulo']==csi_modulo]             #modulo AQ_CSI
+        df_csi = df_csi.loc[df_csi['Fecha']==df_csi['Fecha'].max()]
         df_csi.set_index('Nombre', inplace=True)
-        df_csd = dff.loc[df['ID_Modulo']==csd_modulo]             #modulo AQ_CSD
+        df_csd = df.loc[df['ID_Modulo']==csd_modulo]             #modulo AQ_CSD
+        df_csd = df_csd.loc[df_csd['Fecha']==df_csd['Fecha'].max()]
         df_csd.set_index('Nombre', inplace=True)
 
-        actualizado = "Última actualización: {}".format(df['Fecha'].max().strftime('%d/%m/%y, %H:%M:%S'))
+        ultima_actualizacion_csi = "Actualizado a: {}".format(df_csi['Fecha'].max().strftime('%I %p - %d/%m/%Y'))
+        ultima_actualizacion_csd = "Actualizado a: {}".format(df_csd['Fecha'].max().strftime('%I %p - %d/%m/%Y'))
         info_csi = texto_ultimo_valores(df_csi)
         info_csd = texto_ultimo_valores(df_csd)
-        
+
         aqi_csi = int(calculate_aqi(df_csi))
         aqi_csd = int(calculate_aqi(df_csd))
 
@@ -688,31 +765,18 @@ def aqi_dash(server, route):
             info_csd['temp'], 
             info_csd['humedad'], 
             info_csd['presion'],
-            actualizado,
+            #ultima_actualizacion_csi,
+            ultima_actualizacion_csd,
             #aqi_csi,
             aqi_csd,
         ]
 
         return results
 
-    # Selectors -> AQI graph
-    @app.callback(
-        Output("aq_graph", "figure"),
-        [
-            Input("campus_selector", "value"),
-            Input("date_type_selector", "value"),
-            Input("time_range", "start_date"),
-            Input("time_range", "end_date"),
-        ],
-        )
-    def make_aqi_figure(campus_selector, date_type_selector, time_range_start, time_range_end):
-        df = filter_dataframe(load_data(), campus_selector, date_type_selector, time_range_start, time_range_end)
-        
-        return graficar_aqi(df, campus_selector)
-
-    # Selectors -> Graficas contaminantes
+    # Selectors -> Graficas AQI & Contaminantes
     @app.callback(
         [
+            Output("aq_graph", "figure"),
             Output("pm1_graph", "figure"),
             Output("pm25_graph", "figure"),
             Output("pm10_graph", "figure"),
@@ -730,11 +794,12 @@ def aqi_dash(server, route):
         )
     def hacer_figuras_contaminantes(campus_selector, date_type_selector, time_range_start, time_range_end):
         codigo_contaminantes = ['PM1', 'PM25', 'PM10','Gas_CO','Gas_NO2','Gas_O3','Gas_SO2']
-        nombre_contaminantes = ['Particulado PM1 (µg/\u33A5)', 'Particulado PM25 (µg/\u33A5)', 'Particulado PM10 (µg/\u33A5)','Monóxido de Carbono - CO (PPM)','Dióxido de Nitrógeno - NO₂ (PPB)','Ozono - O₃ (PPM)','Dióxido de Azufre - SO₂ (PPB)']
-        df = filter_dataframe(load_data(), campus_selector, date_type_selector, time_range_start, time_range_end)
+        nombre_contaminantes = ['Particulado PM1 (µg/\u33A5)', 'Particulado PM2.5 (µg/\u33A5)', 'Particulado PM10 (µg/\u33A5)','Monóxido de Carbono - CO (PPM)','Dióxido de Nitrógeno - NO₂ (PPB)','Ozono - O₃ (PPM)','Dióxido de Azufre - SO₂ (PPB)']
+        url = aq_api_url + "?inicio={}&fin={}".format(time_range_start,time_range_end)
+        df = filter_dataframe(load_data(url), campus_selector, date_type_selector)
 
         result = []
-
+        result.append(graficar_aqi(df, campus_selector))
         for codigo, nombre in zip(codigo_contaminantes,nombre_contaminantes):
             result.append(graficar_contaminantes(df.loc[df['Nombre']==codigo], nombre, campus_selector))
 

@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="static/css/aos.css">
 
     <link rel="stylesheet" href="static/css/style.css">
+    
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
 
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -63,36 +65,8 @@
 
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
                 <li><a href="#home-section" class="nav-link">Inicio</a></li>
-                <li class="has-children">
-                  <a href="#proyecto-section" class="nav-link">Sobre el proyecto</a>
-                  <ul class="dropdown arrow-top">
-                    <li class="has-children">
-                      <a href="#">Plataforma de monitoreo</a>
-                      <ul class="dropdown">
-                        <li><a href="/calidadaire">Calidad del Aire</a></li>
-                        <li><a href="/ruido">Ruido acustico</a></li>
-                        <li><a href="/thp">Temperatura, humedad relativa y presión atmosferica</a></li>
-                      </ul>
-                    </li>
-                    <li class="has-children">
-                      <a href="#" class="nav-link">Puntos de medición</a>
-                      <ul class="dropdown">
-                        <li><a href="/csd">Campus Santo Domingo</a></li>
-                        <li><a href="/csi">Campus Santiago</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="/datosabiertos" class="nav-link">Datos abiertos</a></li>
-                    <li><a href="/documentacion" class="nav-link">Documentación</a></li>
-                  </ul>
-                </li>
-                <li class="has-children">
-                  <a href="#nosotros-section" class="nav-link">Nosotros</a>
-                  <ul class="dropdown arrow-top">
-                    <li><a href="#equipo-section">Equipo de desarrollo</a></li>
-                    <li><a href="#iniciativas-section">Otras iniciativas</a></li>
-                    <li><a href="#contacto-section">Contacto</a></li>
-                  </ul>
-                </li>
+                <li><a href="#proyecto-section" class="nav-link">Panel de datos</a></li>
+                <li><a href="#nosotros-section" class="nav-link">Nosotros</a></li>
                 <li><a href="/login" class="nav-link">Iniciar sesión</a></li>
               </ul>
             </nav>
@@ -120,7 +94,7 @@
                 <h1>Tecnología para mejorar nuestra calidad de vida universitaria</h1>
                 <p class="mb-4">Utilizando una red de sensores, desplegado en ambos campus de la PUCMM, podemos monitorear las condiciones medioambientales en tiempo real. La data generada es utilizada para concientizar y tomar mejores decisiones con relación a la contaminación en nuestro espacio urbano.</p>
                 <div>
-                  <a href="/calidadaire" class="btn btn-primary mr-2 mb-2">Ir a visualización</a>
+                  <a href="/csi" class="btn btn-primary mr-2 mb-2">Campus Santiago</a><a href="/csd" class="btn btn-primary mr-2 mb-2">Campus Santo Dommingo</a>
                 </div>
               </div>
 
@@ -151,7 +125,7 @@
               <div>
                 <h3>Calidad del Aire</h3>
                 <p>Usando sensores de gases, hacemos una medición de la concentración de CO, SO2, NO2, O3, PM1, PM2.5 y PM10. Con estos datos, calculamos el índice de calidad del aire en ambos campus de la PUCMM.</p>
-                <p><a href="/calidadaire">Ver índice</a></p>
+                <p><a href="/calidadaire">Ver visualización</a></p>
               </div>
             </div>
 
@@ -163,9 +137,9 @@
                 <span class="icon-wrap"><span class="text-primary icon-bullhorn"></span></span>
               </div>
               <div>
-                <h3>Ruido Acústico</h3>
+                <h3>Ruido ambiental</h3>
                 <p>Con una distribución de sensores de ruido, podemos medir el nivel de sonidos en puntos estratégicos de ambos campus de la PUCMM.</p>
-                <p></br></br><a href="/ruido">Ir al mapa interactivo</a></p>
+                <p></br></br><a href="/ruido">Ver mapa interactivo</a></p>
               </div>
             </div>
           </div>
@@ -177,7 +151,7 @@
               <div>
                 <h3>Temperatura y otras condiciones</h3>
                 <p>Con una distribución de sensores, presentamos en un mapa interactivo las temperatura, humedad relativa y presión atmosférica en puntos estratégicos de ambos campus de la PUCMM.</p>
-                <p></br><a href="/thp">Ir al mapa interactivo</a></p>
+                <p></br><a href="/thp">Ver mapa interactivo</a></p>
               </div>
             </div>
           </div>
@@ -191,7 +165,7 @@
               <div>
                 <h3>Datos abiertos</h3>
                 <p>Accede a nuestros datos de forma libre. Te damos la oportunidad de que descargue los datos, y lo utilices en cualquier proyecto que tengas. Es importante que todos podamos crear soluciones para nuestra comunidad.</p>
-                <p><a href="/datosabiertos">Más información</a></p>
+                <p><a href="/datosabiertos">Descarga y usa nuestros datos</a></p>
               </div>
             </div>
           </div>
@@ -199,30 +173,19 @@
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
             <div class="unit-4 d-block">
               <div class="unit-4-icon mb-3">
-                <span class="icon-wrap"><span class="text-primary icon-map-marker"></span></span>
+                <span class="icon-wrap"><span class="text-primary icon-book"></span></span>
               </div>
               <div>
-                <h3>Campus Santo Domingo</h3>
-                <p>Con cuatro puntos de medición puedes visualizar las condiciones en nuestro campus, ubicado en el centro del Distrito Nacional, Santo Domingo.</p>
-                <p></br></br><a href="/csd">Ver condiciones del campus</a></p>
+                <h3>Documentación</h3>
+                <p>Te explicamos todo el proceso de coleción de los datos y como los puedes integrar a tu solución. Te mostramos multiples ejemplo para accesar y manipular los datos.</p>
+                <p></br><a href="/csd">Descubre como usar nuestra plataforma</a></p>
               </div>
             </div>
 
 
           </div>
 
-          <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="unit-4 d-block">
-              <div class="unit-4-icon mb-3">
-                <span class="icon-wrap"><span class="text-primary icon-map-marker"></span></span>
-              </div>
-              <div>
-                <h3>Campus Santiago</h3>
-                <p>Con cuatro puntos de medición puedes visualizar las condiciones en nuestro campus, ubicado en Santiago de los Caballeros.</p>
-                <p></br></br><a href="/csi">Ver condiciones del campus</a></p>
-              </div>
-            </div>
-          </div>
+          
 
         </div>
       </div>
@@ -336,7 +299,7 @@
               </div>
               <h2 class="text-black h1">Dr. Víctor González</h2>
               <span class="sub-title d-block mb-3">Investigador principal</span>
-              <p>Gerente del proyecto y responsable del desarrollo de la plataforma (visualización y datos abiertos).</p>
+              <p>Datos abiertos, Analítica de datos, Visualización de datos</p>
             </div>
           </div>
 
@@ -344,7 +307,7 @@
             <div class="person">
               <div class="bio-img">
                 <figure>
-                  <img src="static/images/noprofile.png" alt="Image" class="img-fluid">
+                  <img src="static/images/mp.jpeg" alt="Image" class="img-fluid">
                 </figure>
                 <div class="social">
                   <a href="mailto: man.peralta@ce.pucmm.edu.do"><span class="icon-envelope"></span></a>
@@ -353,7 +316,7 @@
               </div>
               <h2 class="text-black h1">Dr. Manuel Peralta</h2>
               <span class="sub-title d-block mb-3">Co investigador</span>
-              <p>Responsable del desarrollo de los equipos de medición</p>
+              <p>Desarrollo de software, Internet de la Cosas</p>
 
             </div>
           </div>
@@ -362,7 +325,7 @@
             <div class="person">
               <div class="bio-img">
                 <figure>
-                  <img src="static/images/noprofile.png" alt="Image" class="img-fluid">
+                  <img src="static/images/jf.png" alt="Image" class="img-fluid">
                 </figure>
                 <div class="social">
                   <a href="mailto: jg.faxas@ce.pucmm.edu.do"><span class="icon-envelope"></span></a>
@@ -371,58 +334,7 @@
               </div>
               <h2 class="text-black h1">Dr. Juan Faxas</h2>
               <span class="sub-title d-block mb-3">Co investigador</span>
-              <p>Responsable del sistema de información geográfico.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="person">
-              <div class="bio-img">
-                <figure>
-                  <img src="static/images/noprofile.png" alt="Image" class="img-fluid">
-                </figure>
-                <div class="social">
-                  <a href="mailto: virginiaflores@pucmm.edu.do"><span class="icon-envelope"></span></a>
-                  <a href="https://investigacion.pucmm.edu.do/virginia-flores"><span class="icon-link"></span></a>
-                </div>
-              </div>
-              <h2 class="text-black h1">Dra. Virginia Flores</h2>
-              <span class="sub-title d-block mb-3">Co investigadora</span>
-              <p>Responsable de los aspectos urbanos.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="person">
-              <div class="bio-img">
-                <figure>
-                  <img src="static/images/noprofile.png" alt="Image" class="img-fluid">
-                </figure>
-                <div class="social">
-                  <a href="mailto: victorbohorquez@pucmm.edu.do"><span class="icon-envelope"></span></a>
-                  <a href="https://investigacion.pucmm.edu.do/Paginas/V%c3%adctor-Bohorquez.aspx"><span class="icon-link"></span></a>
-                </div>
-              </div>
-              <h2 class="text-black h1">Dr. Víctor Bohorquez</h2>
-              <!--span class="sub-title d-block mb-3">Co investigador</span-->
-              <p></p>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="person">
-              <div class="bio-img">
-                <figure>
-                  <img src="static/images/noprofile.png" alt="Image" class="img-fluid">
-                </figure>
-                <div class="social">
-                  <a href="mailto: l.ruiz@ce.pucmm.edu.do"><span class="icon-envelope"></span></a>
-                  <a href="https://investigacion.pucmm.edu.do/letzai-ruiz"><span class="icon-link"></span></a>
-                </div>
-              </div>
-              <h2 class="text-black h1">Dra. Letzai Ruiz</h2>
-              <!--span class="sub-title d-block mb-3">Co investigador</span-->
-              <p></p>
+              <p>Sistema de información geográfico</p>
             </div>
           </div>
         </div>
@@ -451,67 +363,6 @@
           </div>
 
         </div>
-    </div>
-
-    <div class="site-section bg-image2 overlay" id="contacto-section" style="background-image: url('static/images/sensores.jpeg');">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-12 text-center">
-            <h2 class="section-title mb-3 text-white">Contáctanos</h2>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-7 mb-5">
-
-
-
-            <form action="mailto:vm.gonzalez@ce.pucmm.edu.do" class="p-5 bg-white" method="post">
-
-              <h2 class="h4 text-black mb-5">Si te interesa el proyecto:</h2>
-
-              <div class="row form-group">
-                <div class="col-md-12">
-                  <label class="text-black" for="name">Nombre completo</label>
-                  <input type="text" id="name" class="form-control rounded-0">
-                </div>
-              </div>
-
-              <div class="row form-group">
-
-                <div class="col-md-12">
-                  <label class="text-black" for="company">Empresa</label>
-                  <input type="subject" id="company" class="form-control rounded-0">
-                </div>
-              </div>
-
-              <div class="row form-group">
-
-                <div class="col-md-12">
-                  <label class="text-black" for="mail">Correo Electrónico</label>
-                  <input type="email" id="mail" class="form-control rounded-0">
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col-md-12">
-                  <label class="text-black" for="message">Comentarios</label>
-                  <textarea name="message" id="message" cols="30" rows="7" class="form-control rounded-0"></textarea>
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col-md-12">
-                  <input type="submit" value="Enviar mensaje" class="btn btn-primary mr-2 mb-2">
-                </div>
-              </div>
-
-
-            </form>
-          </div>
-
-        </div>
-
-      </div>
     </div>
 
     <div class="footer py-5 text-center">
