@@ -15,7 +15,7 @@ PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 #AirQuality Data URL
-aq_api_url = "http://smartcampus.pucmm.edu.do/api/v1/ambiental"
+aq_api_url = "https://smartcampus.pucmm.edu.do/api/v1/ambiental"
 
 #Date format
 date_format='%Y/%m/%d, %H:%M:%S'
@@ -77,9 +77,9 @@ def aqi_dash(server, route):
                         [
                             html.Div(
                                 [
-                                    html.A("Panel de datos", href="http://smartcampus.pucmm.edu.do/paneldatos", style={'padding': 15}),
-                                    html.A("Datos abiertos", href="http://smartcampus.pucmm.edu.do/datosabiertos", style={'padding': 15}),
-                                    html.A("Documentación", href="http://smartcampus.pucmm.edu.do/documentacion", style={'padding': 15}),
+                                    html.A("Panel de datos", href="https://smartcampus.pucmm.edu.do/paneldatos", style={'padding': 15}),
+                                    html.A("Datos abiertos", href="https://smartcampus.pucmm.edu.do/datosabiertos", style={'padding': 15}),
+                                    html.A("Documentación", href="https://smartcampus.pucmm.edu.do/documentacion", style={'padding': 15}),
                                     
                                 ]
                             )
@@ -108,7 +108,7 @@ def aqi_dash(server, route):
                                                     id="csd_aq_gauge",
                                                     max=500,
                                                     min=0,
-                                                    color={'default':'#4285f4'},
+                                                    color='#4285f4',
                                                     showCurrentValue=True,  # default size 200 pixel
                                                 ),
                                             ],
@@ -210,7 +210,7 @@ def aqi_dash(server, route):
                                                     id="csi_aq_gauge",
                                                     max=500,
                                                     min=0,
-                                                    color={'default':'#4285f4'},
+                                                    color='#4285f4',
                                                     showCurrentValue=True,  # default size 200 pixel
                                                 ),
                                             ],
@@ -307,6 +307,17 @@ def aqi_dash(server, route):
             html.Div(
                 [
                     html.Div(
+                            [dcc.Graph(id="aq_info_table")],
+                            className="pretty_container twelve columns",
+                        ),
+                
+                ],
+                className="row flex-display",
+            ),
+            #Botones de selección y tabla de referencia
+            html.Div(
+                [
+                    html.Div(
                         [
                             html.P("Elige el campus universitario ", className="control_label"),
                             dcc.RadioItems(
@@ -320,6 +331,11 @@ def aqi_dash(server, route):
                                 labelStyle={"display": "inline-block"},
                                 className="dcc_control",
                             ),
+                        ],
+                        className="pretty_container four columns",
+                    ),
+                    html.Div(
+                        [
                             html.P(
                                 "Medidas promedio por:",
                                 className="control_label",
@@ -336,6 +352,11 @@ def aqi_dash(server, route):
                                 labelStyle={"display": "inline-block"},
                                 className="dcc_control",
                             ),
+                        ],
+                        className="pretty_container four columns",
+                    ),
+                    html.Div(
+                        [
                             html.P(
                                 "Rango de fecha:",
                                 className="control_label",
@@ -352,13 +373,7 @@ def aqi_dash(server, route):
                             ),
                         ],
                         className="pretty_container four columns",
-                        id="cross-filter-options",
                     ),
-                    html.Div(
-                            [dcc.Graph(id="aq_info_table")],
-                            className="pretty_container eight columns",
-                        ),
-                
                 ],
                 className="row flex-display",
             ),
@@ -463,16 +478,20 @@ def aqi_dash(server, route):
             so2 = row.loc['Gas_SO2']["Valor"]
         if 'Gas_NO2' in row.index:
             no2 = row.loc['Gas_NO2']["Valor"]
-
-        value = aqi.to_aqi([
-            (aqi.POLLUTANT_PM25, pm25),
-            (aqi.POLLUTANT_PM10, pm10),
-            (aqi.POLLUTANT_O3_8H, o3),
-            (aqi.POLLUTANT_CO_8H, co),
-            (aqi.POLLUTANT_SO2_1H, so2),
-            (aqi.POLLUTANT_NO2_1H, no2),
-        ])
         
+        
+        try:
+            value = aqi.to_aqi([
+                (aqi.POLLUTANT_PM25, pm25),
+                (aqi.POLLUTANT_PM10, pm10),
+                (aqi.POLLUTANT_O3_8H, o3),
+                (aqi.POLLUTANT_CO_8H, co),
+                (aqi.POLLUTANT_SO2_1H, so2),
+                (aqi.POLLUTANT_NO2_1H, no2),
+            ])
+        except:
+            value = 0
+
         return value
 
     #Crear AQ info table
@@ -673,6 +692,22 @@ def aqi_dash(server, route):
         
         return figure
 
+    #definir color basado en nivel de calidad del aire
+    def color_nivel_aqi(valor):
+        if valor <= 50:
+            color = '#90AD71'
+        elif int(valor) in range (51,101):
+            color = '#F2E01D'
+        elif int(valor) in range (101,151):
+            color = '#FCB156'
+        elif int(valor) in range (151,201):
+            color = '#FC6E56'
+        elif int(valor) in range (201,301):
+            color = '#7A49A5'
+        else:
+            color = '#780808'
+
+        return color
 
     #Callbacks section
 
@@ -714,6 +749,9 @@ def aqi_dash(server, route):
             Output("csd_fecha_actualizado_text", "children"),
             #Output("csi_aq_gauge", "value"),
             Output("csd_aq_gauge", "value"),
+            #Output("csi_aq_gauge", "color"),
+            Output("csd_aq_gauge", "color"),
+            
         ],
         [
             Input("campus_selector", "value"),
@@ -736,13 +774,15 @@ def aqi_dash(server, route):
         df_csd = df_csd.loc[df_csd['Fecha']==df_csd['Fecha'].max()]
         df_csd.set_index('Nombre', inplace=True)
 
-        ultima_actualizacion_csi = "Actualizado a: {}".format(df_csi['Fecha'].max().strftime('%I %p - %d/%m/%Y'))
-        ultima_actualizacion_csd = "Actualizado a: {}".format(df_csd['Fecha'].max().strftime('%I %p - %d/%m/%Y'))
+        ultima_actualizacion_csi = "Actualizado a: {}".format(df_csi['Fecha'].max().strftime('%-I %p - %d/%m/%Y'))
+        ultima_actualizacion_csd = "Actualizado a: {}".format(df_csd['Fecha'].max().strftime('%-I %p - %d/%m/%Y'))
         info_csi = texto_ultimo_valores(df_csi)
         info_csd = texto_ultimo_valores(df_csd)
 
         aqi_csi = int(calculate_aqi(df_csi))
+        aqi_color_csi = color_nivel_aqi(aqi_csi)
         aqi_csd = int(calculate_aqi(df_csd))
+        aqi_color_csd = color_nivel_aqi(aqi_csd)
 
         results = [
             #info_csi['pm25'], 
@@ -769,6 +809,9 @@ def aqi_dash(server, route):
             ultima_actualizacion_csd,
             #aqi_csi,
             aqi_csd,
+            #aqi_color_csi,
+            aqi_color_csd,
+
         ]
 
         return results

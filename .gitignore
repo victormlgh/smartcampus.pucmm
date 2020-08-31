@@ -1,6 +1,7 @@
 #Credential folder
 config/
 application/querytest.py
+application/config/
 
 # General for Mac
 .DS_Store

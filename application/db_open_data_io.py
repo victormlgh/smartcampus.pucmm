@@ -2,6 +2,8 @@ import mysql.connector as mariadb
 from datetime import datetime
 import pandas as pd
 import json
+import pathlib
+import pandas as pd
 
 
 query_num_serial = "SELECT ID_Modulo FROM Modulo WHERE Num_serial = %s"
@@ -18,8 +20,10 @@ api_date_format = '%Y-%m-%d'
 post_date_format = '%a, %y/%m/%d, %H:%M:%S'
 get_date_format = '%Y/%m/%d, %H:%M:%S'
 
-with open('config/credential.json') as f:
-        credential = json.load(f)
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+CONFIG_PATH = PATH.joinpath("config").resolve()
+credential = pd.read_json(CONFIG_PATH.joinpath("credential.json"), typ='series')
 
 def validate_api_date(date_text):
     try:

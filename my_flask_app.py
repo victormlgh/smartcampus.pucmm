@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, make_response, send_file
-from application import db_open_data_io, aqi_app
+from application import db_open_data_io, aqi_app, ruido_app
 
 #Luego de las pruebas, eliminar db_prueba_manuel
 from application import db_prueba_manuel
@@ -11,9 +11,9 @@ server = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@server.route("/ruido")
-def ruido():
-        return render_template("working_on.html")
+#@server.route("/ruido")
+#def ruido():
+#        return render_template("working_on.html")
 
 @server.route("/thp")
 def thp():
@@ -42,6 +42,10 @@ def paneldatos():
 @server.route("/login")
 def login():
         return render_template("login.html")
+
+@server.route("/error")
+def error404():
+        return render_template("default.html")
 
 @server.route("/metadata")
 def metadata():
@@ -98,6 +102,7 @@ def api_prueba_interna():
 
 # Cargar los dashboards desarrollados en dash
 calidadaire = aqi_app.aqi_dash(server, '/calidadaire/')
+ruido = ruido_app.ruido_dash(server, '/ruido/')
 
 #Manejo de paginas no encontradas
 def page_not_found(e):

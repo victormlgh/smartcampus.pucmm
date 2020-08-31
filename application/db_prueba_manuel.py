@@ -1,6 +1,8 @@
 import mysql.connector as mariadb
 from datetime import datetime
 import json
+import pathlib
+import pandas as pd
 
 query_num_serial = "SELECT ID_Modulo FROM Modulo WHERE Num_serial = %s"
 query_var_ambiental = "SELECT ID_VA FROM Variables_ambientales WHERE Nombre = %s"
@@ -10,8 +12,10 @@ query_insert_interna = "INSERT INTO Medida_internas (ID_Variables_Internas, ID_M
 query_select_ambiental = "select Nombre, ID_Modulo, Valor, Fecha from Medidas_Ambientales, Variables_ambientales where ID_VA = ID_Variables_ambientales order by Fecha;"
 query_select_interna = "select Nombre, ID_Modulo, Valor, Fecha from Medida_internas, Variables_Internas where ID_VI = ID_Variables_Internas order by Fecha;"
 
-with open('config/credential.json') as f:
-        credential = json.load(f)
+# get relative data folder
+PATH = pathlib.Path(__file__).parent
+CONFIG_PATH = PATH.joinpath("config").resolve()
+credential = pd.read_json(CONFIG_PATH.joinpath("credential.json"), typ='series')
 
 def post_ambiental(data):
 

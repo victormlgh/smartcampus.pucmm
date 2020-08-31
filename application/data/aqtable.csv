@@ -1,7 +1,7 @@
 Color,Nivel,Valores,Descripcion
-#79c229,Bueno,0-50,La calidad del aire es satisfactoria y la contaminación del aire representa poco o ningún riesgo.
-#f0df29,Moderado,51-100,"La calidad del aire es aceptable. Sin embargo, puede haber un riesgo para algunas personas, particularmente aquellas que son inusualmente sensibles a la contaminación del aire."
-#f08929,Poco saludable para grupos sensitivos,101-150,Los miembros de grupos sensibles pueden experimentar efectos sobre la salud. Es menos probable que el público en general se vea afectado.
-#f03029,Poco saludable,151-200,Algunos miembros del público en general pueden experimentar efectos sobre la salud. Los miembros de grupos sensibles pueden experimentar efectos de salud más graves.
-#8329f0,Nada saludable,201-300,Alerta de salud: el riesgo de efectos sobre la salud aumenta para todos. Es importante limitar las actividades en el exterior.
+#90AD71,Bueno,0-50,La calidad del aire es satisfactoria y la contaminación del aire representa poco o ningún riesgo.
+#F2E01D,Moderado,51-100,"La calidad del aire es aceptable. Sin embargo, puede haber un riesgo para algunas personas, particularmente aquellas que son inusualmente sensibles a la contaminación del aire."
+#FCB156,Poco saludable para grupos sensitivos,101-150,Los miembros de grupos sensibles pueden experimentar efectos sobre la salud. Es menos probable que el público en general se vea afectado.
+#FC6E56,Poco saludable,151-200,Algunos miembros del público en general pueden experimentar efectos sobre la salud. Los miembros de grupos sensibles pueden experimentar efectos de salud más graves.
+#7A49A5,Nada saludable,201-300,Alerta de salud: el riesgo de efectos sobre la salud aumenta para todos. Es importante limitar las actividades en el exterior.
 #780808,Peligroso,301-500,Advertencia de salud de condiciones de emergencia. Es recomendable permanecer adentro con las ventanas cerradas.
