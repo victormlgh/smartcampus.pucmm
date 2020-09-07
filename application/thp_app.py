@@ -31,13 +31,13 @@ csi_location_name = ['CSI_1', 'CSI_2', 'CSI_3', 'CSI_4']
 csd_location_name = ['Padre Alemán', 'Edificio A1', 'Edificio B1']
 
 #Variables globales
-env_var = "Ruido"
+env_var = ["Temp", "Humedad", "Presion"]
 mapbox_access_token = api_credentials['mapbox']
 
-def ruido_dash(server, route):
+def thp_dash(server, route):
 
     app = dash.Dash(__name__, server=server, routes_pathname_prefix=route)
-    app.title = 'Mapa de Ruido - Smart Campus - Pontificia Universidad Católica Madre y Maestra'
+    app.title = 'Mapa de las condiciones climáticas - Smart Campus - Pontificia Universidad Católica Madre y Maestra'
 
     # App layout section
     app.layout = html.Div(
@@ -73,7 +73,7 @@ def ruido_dash(server, route):
                                         style={"margin-bottom": "0px"},
                                     ),
                                     html.H4(
-                                        "Mapa de Ruido",
+                                        "Mapa de las condiciones climáticasido",
                                         style={"margin-bottom": "0px"},
                                     ),
                                     
@@ -208,10 +208,27 @@ def ruido_dash(server, route):
             html.Div(
                 [
                     html.Div(
-                        [dcc.Graph(id="noise_graph")],
+                        [dcc.Graph(id="temperature_graph")],
                         className="pretty_container twelve columns",
                     ),
-                    
+                ],
+                className="row flex-display",
+            ),
+            html.Div(
+                [
+                    html.Div(
+                        [dcc.Graph(id="humidity_graph")],
+                        className="pretty_container twelve columns",
+                    ),
+                ],
+                className="row flex-display",
+            ),
+            html.Div(
+                [
+                    html.Div(
+                        [dcc.Graph(id="pressure_graph")],
+                        className="pretty_container twelve columns",
+                    ),
                 ],
                 className="row flex-display",
             ),
@@ -223,7 +240,7 @@ def ruido_dash(server, route):
     #Cargar el data frame
     def load_data(url):
         df = pd.DataFrame.from_dict(requests.get(url).json())
-        df = df.loc[df['Nombre'] == env_var]           #Modulos de AQ de CSI & CSD
+        df = df.loc[df['Nombre'].isin(env_var)]           
         df['Fecha'] = pd.to_datetime(df['Fecha'], format=date_format)
         df['Valor'] =df['Valor'].replace(to_replace=-1, value=0)
         
@@ -232,22 +249,22 @@ def ruido_dash(server, route):
     #Filtro del Data Frame
     def filter_dataframe(df, date_type_selector):
 
-        dff = df.groupby(['ID_Modulo','Longitud', 'Latitud',pd.Grouper(key='Fecha', freq=date_type_selector)]).agg({'Valor':'mean'})
+        dff = df.groupby(['ID_Modulo', 'Nombre', 'Longitud', 'Latitud',pd.Grouper(key='Fecha', freq=date_type_selector)]).agg({'Valor':'mean'})
         dff = dff.reset_index()
 
         return dff
 
-    #definir color basado en nivel de ruido
-    def color_nivel_ruido(valor):
-        if valor < 55:
+    #definir color basado en nivel de temperatura
+    def color_nivel_temp(valor):
+        if valor < 15:
             color = '#59C3C3'
-        elif int(valor) in range (55,60):
+        elif int(valor) in range (15,20):
             color = '#90AD71'
-        elif int(valor) in range (60,65):
+        elif int(valor) in range (20,25):
             color = '#657A4E'
-        elif int(valor) in range (65,70):
+        elif int(valor) in range (25,30):
             color = '#F2E01D'
-        elif int(valor) in range (70,75):
+        elif int(valor) in range (30,35):
             color = '#FCB156'
         else:
             color = '#FC6E56'
@@ -258,7 +275,7 @@ def ruido_dash(server, route):
     def create_info_table(title=""):
         figure = go.Figure(data=[go.Table(
             header=dict(
-                values=[[">75 dB","70-75 dB","65-70 dB","60-65 db","55-60 dB","<55 dB"]], 
+                values=[[">35 °C","30-35 °C","25-20 °C","20-25 °C","15-20 °C","<15 °C"]], 
                 align='left',
                 fill=dict(color=[["#FC6E56","#FCB156","#F2E01D","#657A4E","#90AD71","#59C3C3"]]),
                 font=dict(color='black'),
@@ -274,8 +291,8 @@ def ruido_dash(server, route):
         )
         
         return figure
-    #Crear mapa de ruido
-    def noise_map_graph(df, sensors, location_name, lon_campus, lat_campus):
+    #Crear mapa climatico
+    def climate_map_graph(df, sensors, location_name, lon_campus, lat_campus):
 
         layout = dict(
             autosize=True,
@@ -286,7 +303,7 @@ def ruido_dash(server, route):
             plot_bgcolor="#F1F1F1",
             paper_bgcolor="#F1F1F1",
             legend=dict(font=dict(size=10), orientation="h"),
-            title="Nivel actual de ruido",
+            title="Nivel actual de las condiciones climáticas",
             mapbox=dict(
                 accesstoken=mapbox_access_token,
                 style="light",
@@ -301,20 +318,21 @@ def ruido_dash(server, route):
             if not dff.empty:
                 fecha = dff["Fecha"].max().strftime('%-H:%M:%S - %d/%m/%Y')
                 dff = dff.loc[dff['Fecha']==dff['Fecha'].max()]
-                valor = dff['Valor'].tolist()[0]
-                #color = "#849E68"
+                temp = dff.loc[dff['Nombre']=='Temp']['Valor'].tolist()[0]
+                hum = dff.loc[dff['Nombre']=='Humedad']['Valor'].tolist()[0]
+                pres = dff.loc[dff['Nombre']=='Presion']['Valor'].tolist()[0]
                 
                 point = dict(
                     type="scattermapbox",
                     lon=dff["Longitud"],
                     lat=dff["Latitud"],
-                    text="Lugar: {} <br>Nivel: {:,.2f} dB <br>Hora: {}".format(nombre, valor, fecha),
+                    text="Lugar: {} <br>Temperatura: {:,.2f} °C <br>Humedad relativa: {:,.2f} % <br>Presión Atmosférica: {:,.2f} Pa <br>Hora: {}".format(nombre, temp, hum, pres, fecha),
                     name=nombre,
                     customdata=nombre,
                     marker=dict(
                         size=30, 
                         opacity=0.8,
-                        color = color_nivel_ruido(valor),
+                        color = color_nivel_temp(temp),
                     ),
                 )
                 data.append(point)
@@ -323,18 +341,18 @@ def ruido_dash(server, route):
 
         return figure
 
-    #Crear la grafica del comportamiento del ruido
-    def graficar_ruido(df, campus_selector, modulo_selector):
+    #Crear la grafica del comportamiento de las variables
+    def variable_graph(df, campus_selector, modulo_selector, climate_var):
         
         layout = dict(
             autosize=True,
             automargin=True,
-            margin=dict(l=25, r=25, b=20, t=40),
+            margin=dict(l=45, r=25, b=20, t=40),
             hovermode="closest",
             plot_bgcolor="#F1F1F1",
             paper_bgcolor="#F1F1F1",
             legend=dict(font=dict(size=10), orientation="h"),
-            title="Comportamiento histórico del ruido (dB)",
+            title="Comportamiento histórico de la "+ climate_var,
             yaxis=dict(
                 rangemode='nonnegative'
             )
@@ -378,7 +396,7 @@ def ruido_dash(server, route):
         table_info = create_info_table()
         return [table_info, table_info]
     
-    # Selectors -> Mapa de ruido del momento
+    # Selectors -> Mapa climatico del momento
     @app.callback(
         [
             Output("csi_map", "figure"),
@@ -390,14 +408,14 @@ def ruido_dash(server, route):
             Input("time_range", "end_date")
         ],
         )
-    def hacer_mapa_ruido(date_type_selector, time_range_start, time_range_end):
+    def hacer_mapa_climatica(date_type_selector, time_range_start, time_range_end):
         
         url = aq_api_url + "?inicio={}".format(dt.datetime.today().strftime(dpr_format))
         df = load_data(url)
 
         result = []
-        result.append(noise_map_graph(df, csi_modulo, csi_location_name,  -69.931026, 18.461519))              #Campus Santiago
-        result.append(noise_map_graph(df, csd_modulo, csd_location_name, -69.931026, 18.461519))              #Campus Santo Domingo
+        result.append(climate_map_graph(df, csi_modulo, csi_location_name,  -69.931026, 18.461519))              #Campus Santiago
+        result.append(climate_map_graph(df, csd_modulo, csd_location_name, -69.931026, 18.461519))              #Campus Santo Domingo
 
         return result
 
@@ -441,10 +459,12 @@ def ruido_dash(server, route):
 
         return options, value
 
-    #Selectors -> noise graph
+    #Selectors -> Climate var graph
     @app.callback(
         [
-            Output("noise_graph", "figure"),
+            Output("temperature_graph", "figure"),
+            Output("humidity_graph", "figure"),
+            Output("pressure_graph", "figure"),
         ],
         [
             Input("date_type_selector", "value"),
@@ -454,12 +474,16 @@ def ruido_dash(server, route):
             Input("modulo_selector", "value"),
         ],
         )
-    def hacer_figura_ruido(date_type_selector, time_range_start, time_range_end, campus_selector, modulo_selector):
+    def hacer_figura_clima(date_type_selector, time_range_start, time_range_end, campus_selector, modulo_selector):
         url = aq_api_url + "?inicio={}&fin={}".format(time_range_start,time_range_end)
         df = filter_dataframe(load_data(url), date_type_selector)
 
+        titulos=["temperatura (°C)", "humedad relativa (%)", "presión atmosférica (Pa)"]
         results = []
-        results.append(graficar_ruido(df, campus_selector, modulo_selector))
+        for var, titulo in zip(env_var,titulos):
+            dff = df.loc[df['Nombre']==var]
+            results.append(variable_graph(dff, campus_selector, modulo_selector, titulo))
+
         return results
 
 
