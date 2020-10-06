@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, jsonify, make_response, send_file
+from werkzeug.exceptions import HTTPException
+
 from application import db_open_data_io, aqi_app, ruido_app, thp_app
 
 #Luego de las pruebas, eliminar db_prueba_manuel
@@ -102,8 +104,10 @@ ruido = ruido_app.ruido_dash(server, '/ruido/')
 thp = thp_app.thp_dash(server, '/thp/')
 
 #Manejo de paginas no encontradas
+@server.errorhandler(HTTPException)
 def page_not_found(e):
         return render_template("default.html")
+
 #parte principal (main)
 if __name__ == "__main__":
         server.register_error_handler(404, page_not_found)

@@ -15,19 +15,19 @@ PATH = pathlib.Path(__file__).parent
 CONFIG_PATH = PATH.joinpath("config").resolve()
 api_credentials = pd.read_json(CONFIG_PATH.joinpath("api_credential.json"), typ='series')
 
-#AirQuality Data URL
+#Data URL
 aq_api_url = "https://smartcampus.pucmm.edu.do/api/v1/ambiental"
 
 #Date format
 date_format='%Y/%m/%d, %H:%M:%S'
 dpr_format = '%Y-%m-%d' #Date Picker Range format
 
-#ID_Modulos Calidad del Aire en Campus PUCMM
-csi_modulo = [4,5,6,7]
+#ID_Modulos Ruido en Campus PUCMM
+csi_modulo = [8,9,10]
 csd_modulo = [4,5,7]
 
 #Nombre de las localidades donde estan los sensores 
-csi_location_name = ['CSI_1', 'CSI_2', 'CSI_3', 'CSI_4']
+csi_location_name = ['Parqueo General', 'Postgrado', 'Arquitectura']
 csd_location_name = ['Padre Alemán', 'Edificio A1', 'Edificio B1']
 
 #Variables globales
@@ -318,9 +318,19 @@ def thp_dash(server, route):
             if not dff.empty:
                 fecha = dff["Fecha"].max().strftime('%-H:%M:%S - %d/%m/%Y')
                 dff = dff.loc[dff['Fecha']==dff['Fecha'].max()]
-                temp = dff.loc[dff['Nombre']=='Temp']['Valor'].tolist()[0]
-                hum = dff.loc[dff['Nombre']=='Humedad']['Valor'].tolist()[0]
-                pres = dff.loc[dff['Nombre']=='Presion']['Valor'].tolist()[0]
+                #dff.set_index('Nombre', inplace=True)                
+                try:
+                    temp = dff.loc[dff['Nombre']=='Temp']['Valor'].tolist()[0]
+                except:
+                    temp = 0
+                try:
+                    hum = dff.loc[dff['Nombre']=='Humedad']['Valor'].tolist()[0]
+                except:
+                    hum = 0
+                try:
+                    pres = dff.loc[dff['Nombre']=='Presion']['Valor'].tolist()[0]
+                except:
+                    pres = 0
                 
                 point = dict(
                     type="scattermapbox",
@@ -414,7 +424,7 @@ def thp_dash(server, route):
         df = load_data(url)
 
         result = []
-        result.append(climate_map_graph(df, csi_modulo, csi_location_name,  -69.931026, 18.461519))              #Campus Santiago
+        result.append(climate_map_graph(df, csi_modulo, csi_location_name,  -70.683171, 19.443744))              #Campus Santiago
         result.append(climate_map_graph(df, csd_modulo, csd_location_name, -69.931026, 18.461519))              #Campus Santo Domingo
 
         return result

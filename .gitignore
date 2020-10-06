@@ -2,6 +2,8 @@
 config/
 application/querytest.py
 application/config/
+.vscode/
+application/Libelium/
 
 # General for Mac
 .DS_Store

@@ -22,8 +22,8 @@ date_format='%Y/%m/%d, %H:%M:%S'
 dpr_format = '%Y-%m-%d' #Date Picker Range format
 
 #ID_Modulos Calidad del Aire en Campus PUCMM
-csi_modulo = 2
-csd_modulo = 2
+csi_modulo = [3,8]
+csd_modulo = [2]
 
 def aqi_dash(server, route):
 
@@ -440,7 +440,7 @@ def aqi_dash(server, route):
     #Cargar el data frame
     def load_data(url):
         df = pd.DataFrame.from_dict(requests.get(url).json())
-        df.loc[df['ID_Modulo'].isin([csi_modulo,csd_modulo])]           #Modulos de AQ de CSI & CSD
+        df.loc[df['ID_Modulo'].isin(csi_modulo + csd_modulo)]           #Modulos de AQ de CSI & CSD
         df['Fecha'] = pd.to_datetime(df['Fecha'], format=date_format)
         df['Valor'] =df['Valor'].replace(to_replace=-1, value=0)
         df.loc[df['Nombre']=='Gas_NO2', 'Valor'] *=1000                 #llevamos los valores de NO2 de PPM a PPB
@@ -453,9 +453,9 @@ def aqi_dash(server, route):
         dff = df
 
         if campus_selector=="csi":
-            dff = dff.loc[dff['ID_Modulo']==csi_modulo]
+            dff = dff.loc[dff['ID_Modulo'].isin(csi_modulo)]
         elif campus_selector=="csd":
-            dff = dff.loc[dff['ID_Modulo']==csd_modulo]
+            dff = dff.loc[dff['ID_Modulo'].isin(csd_modulo)]
 
         dff = dff.groupby(['ID_Modulo','Nombre',pd.Grouper(key='Fecha', freq=date_type_selector)]).agg({'Valor':'mean'})
         dff = dff.reset_index()
@@ -581,8 +581,8 @@ def aqi_dash(server, route):
         
         data = []
         if campus_selector=="ambos":
-            df_csi=df.loc[df['ID_Modulo']==csi_modulo]
-            df_csd=df.loc[df['ID_Modulo']==csd_modulo]
+            df_csi=df.loc[df['ID_Modulo'].isin(csi_modulo)]
+            df_csd=df.loc[df['ID_Modulo'].isin(csd_modulo)]
             data =[
                 dict(
                     type="scatter",
@@ -639,8 +639,8 @@ def aqi_dash(server, route):
         data = []
         
         if campus_selector=="ambos":
-            df_csi=df.loc[df['ID_Modulo']==csi_modulo]
-            df_csd=df.loc[df['ID_Modulo']==csd_modulo]
+            df_csi=df.loc[df['ID_Modulo'].isin(csi_modulo)]
+            df_csd=df.loc[df['ID_Modulo'].isin(csd_modulo)]
             
             aqi_csi_values = []
             aqi_csd_values = []
@@ -725,16 +725,16 @@ def aqi_dash(server, route):
     #Contaminantes actuales en ambos campus
     @app.callback(
         [
-            #Output("csi_pm25_text", "children"),
-            #Output("csi_pm10_text", "children"),
-            #Output("csi_pm1_text", "children"),
-            #Output("csi_co_text", "children"),
-            #Output("csi_no2_text", "children"),
-            #Output("csi_o3_text", "children"),
-            #Output("csi_so2_text", "children"),
-            #Output("csi_temp_text", "children"),
-            #Output("csi_hum_text", "children"),
-            #Output("csi_pres_text", "children"),
+            Output("csi_pm25_text", "children"),
+            Output("csi_pm10_text", "children"),
+            Output("csi_pm1_text", "children"),
+            Output("csi_co_text", "children"),
+            Output("csi_no2_text", "children"),
+            Output("csi_o3_text", "children"),
+            Output("csi_so2_text", "children"),
+            Output("csi_temp_text", "children"),
+            Output("csi_hum_text", "children"),
+            Output("csi_pres_text", "children"),
             Output("csd_pm25_text", "children"),
             Output("csd_pm10_text", "children"),
             Output("csd_pm1_text", "children"),
@@ -745,11 +745,11 @@ def aqi_dash(server, route):
             Output("csd_temp_text", "children"),
             Output("csd_hum_text", "children"),
             Output("csd_pres_text", "children"),
-            #Output("csi_fecha_actualizado_text", "children"),
+            Output("csi_fecha_actualizado_text", "children"),
             Output("csd_fecha_actualizado_text", "children"),
-            #Output("csi_aq_gauge", "value"),
+            Output("csi_aq_gauge", "value"),
             Output("csd_aq_gauge", "value"),
-            #Output("csi_aq_gauge", "color"),
+            Output("csi_aq_gauge", "color"),
             Output("csd_aq_gauge", "color"),
             
         ],
@@ -767,10 +767,17 @@ def aqi_dash(server, route):
         df = filter_dataframe(load_data(url), 'ambos', 'H')
 
         
-        df_csi = df.loc[df['ID_Modulo']==csi_modulo]             #modulo AQ_CSI
+        df_csi = df.loc[df['ID_Modulo']==csi_modulo[0]]             #modulo AQ_CSI_Gas
         df_csi = df_csi.loc[df_csi['Fecha']==df_csi['Fecha'].max()]
         df_csi.set_index('Nombre', inplace=True)
-        df_csd = df.loc[df['ID_Modulo']==csd_modulo]             #modulo AQ_CSD
+
+        df_csi_pm = df.loc[df['ID_Modulo']==csi_modulo[1]]             #modulo AQ_CSI_PM
+        df_csi_pm = df_csi_pm.loc[df_csi_pm['Fecha']==df_csi_pm['Fecha'].max()]
+        df_csi_pm.set_index('Nombre', inplace=True)
+        
+        df_csi.append(df_csi_pm)
+        
+        df_csd = df.loc[df['ID_Modulo'].isin(csd_modulo)]             #modulo AQ_CSD
         df_csd = df_csd.loc[df_csd['Fecha']==df_csd['Fecha'].max()]
         df_csd.set_index('Nombre', inplace=True)
 
@@ -785,16 +792,16 @@ def aqi_dash(server, route):
         aqi_color_csd = color_nivel_aqi(aqi_csd)
 
         results = [
-            #info_csi['pm25'], 
-            #info_csi['pm10'], 
-            #info_csi['pm1'], 
-            #info_csi['co'], 
-            #info_csi['no2'], 
-            #info_csi['o3'], 
-            #info_csi['so2'], 
-            #info_csi['temp'], 
-            #info_csi['humedad'], 
-            #info_csi['presion'],
+            info_csi['pm25'], 
+            info_csi['pm10'], 
+            info_csi['pm1'], 
+            info_csi['co'], 
+            info_csi['no2'], 
+            info_csi['o3'], 
+            info_csi['so2'], 
+            info_csi['temp'], 
+            info_csi['humedad'], 
+            info_csi['presion'],
             info_csd['pm25'], 
             info_csd['pm10'], 
             info_csd['pm1'], 
@@ -805,11 +812,11 @@ def aqi_dash(server, route):
             info_csd['temp'], 
             info_csd['humedad'], 
             info_csd['presion'],
-            #ultima_actualizacion_csi,
+            ultima_actualizacion_csi,
             ultima_actualizacion_csd,
-            #aqi_csi,
+            aqi_csi,
             aqi_csd,
-            #aqi_color_csi,
+            aqi_color_csi,
             aqi_color_csd,
 
         ]
