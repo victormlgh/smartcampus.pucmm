@@ -149,5 +149,5 @@ def page_not_found(e):
 #parte principal (main)
 if __name__ == "__main__":
         server.register_error_handler(404, page_not_found)
-        server.secret_key = os.urandom(12)
+        #server.secret_key = os.urandom(12)
         server.run()
