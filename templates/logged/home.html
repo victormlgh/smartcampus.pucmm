@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Inicio de sessión &mdash; Smart Campus &mdash; Pontificia Universidad Católica Madre y Maestra</title>
+    <title>Datos Abiertos &mdash; Smart Campus &mdash; Pontificia Universidad Católica Madre y Maestra</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -56,7 +56,7 @@
         <div class="row align-items-center">
 
           <div class="col-6 col-md-3 col-xl-4  d-block">
-            <h1 class="mb-0 site-logo"><a href="/" class="text-black h2 mb-0">Smart Campus<span class="text-primary">.</span> </a></h1>
+            <h1 class="mb-0 site-logo"><a href="/" class="text-black h2 mb-0">Smart Campus - Admin<span class="text-primary">.</span> </a></h1>
           </div>
 
           <div class="col-12 col-md-9 col-xl-8 main-menu">
@@ -65,7 +65,8 @@
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
                 <li><a href="/" class="nav-link">Inicio</a></li>
                 <li><a href="/paneldatos" class="nav-link">Panel de datos</a></li>
-                <li><a href="/login" class="nav-link">Iniciar sesión</a></li>
+                <li><a href="/logout" class="nav-link">Cerrar sesión</a></li>
+                
               </ul>
             </nav>
           </div>
@@ -85,27 +86,34 @@
               <img src="static/images/SmartCampusLogo.png" alt="Image" class="img-fluid">
             </div>
             <div class="col-lg-5 pl-lg-5 ml-auto mt-md-5">
-              <h2 class="text-black">Iniciar Sesión</h2>
+              <h2 class="text-black">Accede a nuestros datos ambientales</h2>
               <div class="author-box" data-aos="fade-left">
-                <form action="/login2" class="p-5 bg-white" method="POST">
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                          <label class="text-black" for="usuario">Usuario</label>
-                          <input type="username" name="usuario" class="form-control rounded-0">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                          <label class="text-black" for="contrasena">Contraseña</label>
-                          <input type="password" name="contrasena" class="form-control rounded-0">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                          <input type="submit" value="Entrar" class="btn btn-primary mr-2 mb-2">
-                        </div>
-                    </div>
-                </form>
+                <div class="d-flex mb-4">
+                  <div class="mr-auto text-black">
+                    <p>Accede a nuestros datos de forma libre. Te damos la oportunidad de que descargue los datos, y lo utilices en cualquier proyecto que tengas. Es importante que todos podamos crear soluciones para nuestra comunidad.</p>
+                    <h5>Descarga en:</h5>
+                    <p><a href="/api/v1/ambiental" class="btn btn-primary">JSON</a> <a href="/api/v1/ambiental?formato=csv" class="btn btn-primary">CSV</a></p>
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+            <div class="col-lg-5 pl-lg-5 ml-auto mt-md-5">
+              <h4 class="text-black">Información adicional</h2>
+              <div class="author-box" data-aos="fade-left">
+                <div class="d-flex mb-4">
+                  <div class="mr-auto text-black">
+                    <ul class="ul-check mb-5 list-unstyled success">
+                      <li>Licencia: <a href ="https://opendefinition.org/licenses/odc-odbl/">Open Database License (ODbL)</a></li>
+                      <li><a href="/metadata">Metadata</a></li>
+                      <li>Formato: JSON & CSV </li>
+                      <li>Creado: 7 de mayo, 2020</li>
+                      <li>Actualizado: tiempo real</li>
+                      <li>Si utilizas nuestros datos, por favor citarnos</li>
+                      <li>Más detalles en nuestra sección de <a href="/documentacion">documentación</a></li>
+                    </ul>
+                  </div>
+                </div>
   
               </div>
             </div>

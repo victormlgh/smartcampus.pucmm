@@ -318,7 +318,7 @@ def thp_dash(server, route):
             if not dff.empty:
                 fecha = dff["Fecha"].max().strftime('%-H:%M:%S - %d/%m/%Y')
                 dff = dff.loc[dff['Fecha']==dff['Fecha'].max()]
-                #dff.set_index('Nombre', inplace=True)                
+                              
                 try:
                     temp = dff.loc[dff['Nombre']=='Temp']['Valor'].tolist()[0]
                 except:
