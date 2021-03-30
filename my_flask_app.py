@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, jsonify, make_response, send_
 from werkzeug.exceptions import HTTPException
 from application import db_open_data_io, aqi_app, ruido_app, thp_app
 
-
-
 from flask import request, session, abort, flash
 import os
 from application import db_login
@@ -142,7 +140,6 @@ def api_movilidad():
 calidadaire = aqi_app.aqi_dash(server, '/calidadaire/')
 ruido = ruido_app.ruido_dash(server, '/ruido/')
 thp = thp_app.thp_dash(server, '/thp/')
-#covid = covid_dash.covid_dash(server, '/precitas/')
 
 #Manejo de paginas no encontradas
 @server.errorhandler(HTTPException)

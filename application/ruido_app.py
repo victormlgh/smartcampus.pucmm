@@ -16,7 +16,7 @@ CONFIG_PATH = PATH.joinpath("config").resolve()
 api_credentials = pd.read_json(CONFIG_PATH.joinpath("api_credential.json"), typ='series')
 
 #Data URL
-aq_api_url = "https://smartcampus.pucmm.edu.do/api/v1/ambiental"
+aq_api_url = "http://smartcampus.pucmm.edu.do/api/v1/ambiental"
 
 #Date format
 date_format='%Y/%m/%d, %H:%M:%S'

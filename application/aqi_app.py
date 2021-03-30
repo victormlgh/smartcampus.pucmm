@@ -15,7 +15,7 @@ PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 #AirQuality Data URL
-aq_api_url = "https://smartcampus.pucmm.edu.do/api/v1/ambiental"
+aq_api_url = "http://smartcampus.pucmm.edu.do/api/v1/ambiental"
 
 #Date format
 date_format='%Y/%m/%d, %H:%M:%S'
