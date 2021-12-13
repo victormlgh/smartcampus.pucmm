@@ -14,7 +14,7 @@ CONFIG_PATH = PATH.joinpath("config").resolve()
 credential = pd.read_json(CONFIG_PATH.joinpath("credential_mov.json"), typ='series')
 
 # post movility metrics
-def post_mov(data)::wqq
+def post_mov(data):
 
     html_response = ""
 
