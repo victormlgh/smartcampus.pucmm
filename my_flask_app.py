@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, make_response, send_file
 from werkzeug.exceptions import HTTPException
-from application import db_open_data_io, aqi_app, ruido_app, thp_app
+from application import db_open_data_io, aqi_app, ruido_app, thp_app, db_open_data_mov
 
 from flask import request, session, abort, flash
 import os
@@ -80,7 +80,7 @@ def control():
 #--------------------------------------------------------
 
 
-#RESTful APIs de la plataforma
+#RESTful APIs de la plataforma - SMART CAMPUS
 @server.route("/api/v1/ambiental", methods=['GET', 'POST'])
 def api_v1_ambientales():
         if request.method == 'POST':
@@ -128,11 +128,20 @@ def api_prueba_interna():
                 results = db_prueba_manuel.get_interna()
                 return jsonify(results)
 
-@server.route("/api/movilidad", methods=['GET', 'POST'])
+#Proyecto de Movilidad
+@server.route("/api/v1/movilidad", methods=['GET', 'POST'])
 def api_movilidad():
         if request.method == 'POST':
                 data = request.get_json()
-                return "201 Created"
+                return db_open_data_mov.post_mov(data)
+        if request.method == 'GET':
+                return "204 No Content"
+
+@server.route("/api/v1/tracking", methods=['GET', 'POST'])
+def api_movilidad_tracking():
+        if request.method == 'POST':
+                data = request.get_json()
+                return db_open_data_mov.post_movement_tracking(data)
         if request.method == 'GET':
                 return "204 No Content"
 
